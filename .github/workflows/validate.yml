@@ -1,0 +1,37 @@
+name: Validate Homebrew Cask
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link tap
+        run: |
+          set -euo pipefail
+          tap_dir="$(brew --repository)/Library/Taps/httpeep/homebrew-httpeep"
+          mkdir -p "$(dirname "${tap_dir}")"
+          ln -s "${PWD}" "${tap_dir}"
+
+      - name: Audit cask
+        run: brew audit --cask --strict --online httpeep/httpeep/httpeep
+
+      - name: Verify downloads
+        run: |
+          set -euo pipefail
+          version="$(ruby -ne 'puts $1 if /^\\s*version\\s+"([^"]+)"/ =~ $_' Casks/httpeep.rb)"
+          arm_sha="$(ruby -ne 'puts $1 if /arm:\\s+"([a-f0-9]{64})"/ =~ $_' Casks/httpeep.rb)"
+          intel_sha="$(ruby -ne 'puts $1 if /intel:\\s+"([a-f0-9]{64})"/ =~ $_' Casks/httpeep.rb)"
+
+          curl -fL "https://s1.httpeep.com/v${version}/HTTPeep_${version}_aarch64.dmg" -o /tmp/HTTPeep_aarch64.dmg
+          echo "${arm_sha}  /tmp/HTTPeep_aarch64.dmg" | shasum -a 256 -c -
+
+          curl -fL "https://s1.httpeep.com/v${version}/HTTPeep_${version}_x86_64.dmg" -o /tmp/HTTPeep_x86_64.dmg
+          echo "${intel_sha}  /tmp/HTTPeep_x86_64.dmg" | shasum -a 256 -c -
