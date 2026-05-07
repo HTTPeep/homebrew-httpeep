@@ -16,6 +16,8 @@ cask "httpeep" do
   end
 
   app "HTTPeep.app"
+  binary "#{appdir}/HTTPeep.app/Contents/MacOS/httpeep-cli"
+  binary "#{appdir}/HTTPeep.app/Contents/MacOS/httpeep-cli", target: "hp"
 
   uninstall quit: "com.httpeep.desktop"
 end
