@@ -26,9 +26,9 @@ jobs:
       - name: Verify downloads
         run: |
           set -euo pipefail
-          version="$(ruby -ne 'puts $1 if /^\\s*version\\s+"([^"]+)"/ =~ $_' Casks/httpeep.rb)"
-          arm_sha="$(ruby -ne 'puts $1 if /arm:\\s+"([a-f0-9]{64})"/ =~ $_' Casks/httpeep.rb)"
-          intel_sha="$(ruby -ne 'puts $1 if /intel:\\s+"([a-f0-9]{64})"/ =~ $_' Casks/httpeep.rb)"
+          version="$(ruby -ne 'puts $1 if /^\s*version\s+"([^"]+)"/ =~ $_' Casks/httpeep.rb)"
+          arm_sha="$(ruby -ne 'puts $1 if /arm:\s+"([a-f0-9]{64})"/ =~ $_' Casks/httpeep.rb)"
+          intel_sha="$(ruby -ne 'puts $1 if /intel:\s+"([a-f0-9]{64})"/ =~ $_' Casks/httpeep.rb)"
 
           curl -fL "https://s1.httpeep.com/v${version}/HTTPeep_${version}_aarch64.dmg" -o /tmp/HTTPeep_aarch64.dmg
           echo "${arm_sha}  /tmp/HTTPeep_aarch64.dmg" | shasum -a 256 -c -
