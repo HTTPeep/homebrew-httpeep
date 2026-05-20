@@ -1,9 +1,9 @@
 cask "httpeep" do
   arch arm: "aarch64", intel: "x86_64"
 
-  version "0.8.12"
-  sha256 arm:   "4e60233d4bec13232c9a59f152df35d98805fd78733c85e397efdd681eabdaad",
-         intel: "a2474387e9524bd3d652cd429c200ca16288781ed61c552aac9b6e52b12df66d"
+  version "0.8.13"
+  sha256 arm:   "2bec82a9e24b075178cf29dd8571397140d7a5f17ca018e3ab58298b5e828b36",
+         intel: "e96a34a7a9efc463aaa411821a4262ef34c1874e5aabbb6abbef962618b045d9"
 
   url "https://s1.httpeep.com/v#{version}/HTTPeep_#{version}_#{arch}.dmg"
   name "HTTPeep"
